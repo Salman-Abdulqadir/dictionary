@@ -72,6 +72,7 @@ const Dictionary = () => {
       <SearchHistory
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
+        onWordClick={onWordClick}
       />
     </section>
   );

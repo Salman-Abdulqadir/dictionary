@@ -41,4 +41,12 @@ export class SearchHistoryService {
   static clearSearchHistory = () => {
     this.setSearchHistories([]);
   };
+  static removeSelectedHistory = (idArr) => {
+    if (!idArr.length || !Array.isArray(idArr)) return;
+    const allSearch = this.getSearchHistories();
+    const filteredSearchHistories = allSearch.filter(
+      (search) => !idArr.includes(search.id)
+    );
+    this.setSearchHistories(filteredSearchHistories);
+  };
 }
