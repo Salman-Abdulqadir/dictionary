@@ -5,8 +5,10 @@ import { LuExternalLink } from "react-icons/lu";
 const Introduction = () => {
   return (
     <div className="flex-1 flex flex-col justify-center items-center gap-4">
-      <LiaBookSolid size={200} />
-      <h1 className="text-6xl">Dictionary</h1>
+      <span className="text-primary">
+        <LiaBookSolid size={200} />
+      </span>
+      <h1 className="text-6xl font-bold">Dictionary</h1>
       <p className="flex gap-2 items-center text-xl">
         Source: Free Dictionary API
         <a

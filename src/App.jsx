@@ -1,4 +1,5 @@
 import Dictionary from "./components/Dictionary";
+
 import "./styles/App.css";
 function App() {
   return (

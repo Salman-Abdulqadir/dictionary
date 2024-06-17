@@ -1,6 +1,6 @@
 import React from "react";
-import AudioPlayer from "../AudioPlayer";
-import { capitalize } from "../../utils/utils";
+import AudioPlayer from "../../AudioPlayer";
+import { capitalize } from "../../../utils/utils";
 import { FaRegBookmark } from "react-icons/fa";
 
 const WordPronounciation = ({ wordMeaning }) => {
@@ -13,7 +13,7 @@ const WordPronounciation = ({ wordMeaning }) => {
   return (
     <div className="flex items-center justify-between gap-4">
       <div>
-        <h3 className="font-bold text-7xl">{capitalize(wordMeaning.word)}</h3>
+        <h3 className="font-bold text-6xl">{capitalize(wordMeaning.word)}</h3>
         <p className="text-xl text-primary mt-2">{phonetic}</p>
       </div>
       {!!audioSrc && <AudioPlayer audioSrc={audioSrc} />}
@@ -57,6 +57,12 @@ const Definition = ({ definition }) => {
         {(definition.definitions || []).map((definition, index) => (
           <li key={`meaninglist-${index}`} className={"marker:text-purple-800"}>
             {definition?.definition}
+            {definition?.example && (
+              <div className="block bg-base-300 text-base-content p-4 rounded-lg mt-4">
+                <strong> Example:</strong>
+                <p className="mt-2">{definition?.example}</p>
+              </div>
+            )}
           </li>
         ))}
       </ul>
@@ -64,24 +70,29 @@ const Definition = ({ definition }) => {
   );
 };
 
-const Definitions = ({ definitions, onWordClick }) => {
-  return definitions?.map((definition, index) => (
-    <div key={index}>
-      <div className="divider divider-start">
-        <h4 className="text-xl font-bold">
-          {capitalize(definition?.partOfSpeech)}
-        </h4>
-      </div>
-      <div className="mt-6">
-        <Definition definition={definition} />
-        <SynonymsAndAntonyms
-          synonyms={definition?.synonyms}
-          antonyms={definition?.antonyms}
-          onWordClick={onWordClick}
-        />
-      </div>
+const Definitions = ({ origin, definitions, onWordClick }) => {
+  return (
+    <div>
+      {!!origin && <h4>{origin}</h4>}
+      {definitions?.map((definition, index) => (
+        <div key={index}>
+          <div className="divider divider-start">
+            <h4 className="text-xl font-bold">
+              {capitalize(definition?.partOfSpeech)}
+            </h4>
+          </div>
+          <div className="mt-6">
+            <Definition definition={definition} />
+            <SynonymsAndAntonyms
+              synonyms={definition?.synonyms}
+              antonyms={definition?.antonyms}
+              onWordClick={onWordClick}
+            />
+          </div>
+        </div>
+      ))}
     </div>
-  ));
+  );
 };
 
 const Reference = ({ sourceUrls }) => {
@@ -90,7 +101,7 @@ const Reference = ({ sourceUrls }) => {
       <div className="divider"></div>
       <div className="flex flex-col gap-4 mt-4">
         {sourceUrls?.map((source, index) => (
-          <div className="flex items-center gap-1">
+          <div key={index} className="flex items-center gap-1">
             <FaRegBookmark /> Source:
             <a
               className=" hover:text-primary transition-colors duration-200"
@@ -111,6 +122,7 @@ const DictionaryResult = ({ wordMeaning, onWordClick }) => {
     <div className={"flex-1 flex flex-col gap-2 flex-grow mt-4"}>
       <WordPronounciation wordMeaning={wordMeaning} />
       <Definitions
+        origin={wordMeaning?.origin}
         definitions={
           Array.isArray(wordMeaning?.meanings) ? wordMeaning?.meanings : []
         }

@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+
 import useApi, { API_STATES } from "../../hooks/useApi.hook";
 import { DictionaryService } from "../../services/dictionary.service";
+import { SearchHistoryService } from "../../services/searchHistory.service";
 
-import DictionaryHeader from "./DictionaryHeader";
-import DictionarySearch from "./DictionarySearch";
-import DictionaryResult from "./DictionaryResult";
+import DictionaryHeader from "./widgets/DictionaryHeader";
+import DictionarySearch from "./widgets/DictionarySearch";
+import DictionaryResult from "./widgets/DictionaryResult";
 import Spinner from "../Spinner";
-import WordNotFound from "./WordNotFound";
-import Introduction from "./Introduction";
+import WordNotFound from "./widgets/WordNotFound";
+import Introduction from "./widgets/Introduction";
+import SearchHistory from "../SearchHistory";
 
 const Dictionary = () => {
   const [dictionaryApiResponse, callDictionaryApi, resetApiState] = useApi(
@@ -15,6 +18,8 @@ const Dictionary = () => {
   );
   const [searchValue, setSearchValue] = useState("");
   const [wordMeaning, setWordMeaning] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   const onSearch = async () => {
     if (!searchValue) {
       setWordMeaning(null);
@@ -34,6 +39,10 @@ const Dictionary = () => {
     } else if (dictionaryApiResponse.state === API_STATES.ERROR) {
       setWordMeaning(null);
     }
+    SearchHistoryService.addSearchHistory(
+      searchValue,
+      dictionaryApiResponse.state
+    );
   }, [dictionaryApiResponse.state]);
 
   const isLoading = dictionaryApiResponse.state === API_STATES.LOADING;
@@ -48,14 +57,22 @@ const Dictionary = () => {
     );
   };
   return (
-    <section className="flex flex-col flex-grow gap-4 min-h-screen w-full sm:w-full lg:w-3/4 p-4">
+    <section className="flex flex-col flex-grow gap-4 h-screen w-full sm:w-full lg:w-3/4 p-4 overflow-y-scroll">
       <DictionaryHeader />
-      <DictionarySearch
-        onSearch={onSearch}
-        searchValue={searchValue}
-        setSearchValue={setSearchValue}
-      />
+      <div className="sticky top-0 bg-base-100">
+        <DictionarySearch
+          onSearch={onSearch}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue}
+          openSearchHistory={() => setIsModalOpen(true)}
+        />
+      </div>
       {getContent()}
+
+      <SearchHistory
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </section>
   );
 };
