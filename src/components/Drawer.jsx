@@ -20,7 +20,7 @@ const Drawer = ({ children, isOpen, setIsOpen, position = "right" }) => {
           className="drawer-overlay"
           onClick={() => setIsOpen(false)}
         ></label>
-        <div className="h-screen overflow-y-scroll w-full sm:w-full lg:w-1/3 bg-base-100 px-4">
+        <div className="w-full sm:w-full lg:w-1/3 bg-base-100 px-4">
           {children}
         </div>
       </div>

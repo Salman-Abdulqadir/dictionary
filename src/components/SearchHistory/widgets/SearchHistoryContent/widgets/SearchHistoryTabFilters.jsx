@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 
 import { MdCheck, MdClose } from "react-icons/md";
-import { API_STATES } from "../../../hooks/useApi.hook";
+import { API_STATES } from "../../../../../hooks/useApi.hook";
+import { SEARCH_HISTORY_ACTIONS, SearchHistoryContext } from "../../../context";
 
 const tabListItems = [
   {
@@ -19,7 +20,14 @@ const tabListItems = [
     value: API_STATES.ERROR,
   },
 ];
-const SearchHistoryTabFilters = ({ selectedState, setSelectedState }) => {
+const SearchHistoryTabFilters = () => {
+  const {
+    state: { selectedState },
+    dispatch,
+  } = useContext(SearchHistoryContext);
+
+  const setSelectedState = (payload) =>
+    dispatch({ type: SEARCH_HISTORY_ACTIONS.SET_SELECTED_STATE, payload });
   return (
     <div role="tablist" className="tabs tabs-boxed">
       {tabListItems.map((tab, index) => (

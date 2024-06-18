@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaRegMoon } from "react-icons/fa";
 
 const ThemeChanger = () => {
-  const [theme, setTheme] = useState(localStorage.getItem("theme"));
+  const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
   const changeTheme = (theme) => {
     const currentTheme = theme === "light" ? "dark" : "light";
     const html = document.querySelector("html");

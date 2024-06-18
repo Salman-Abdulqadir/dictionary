@@ -1,30 +1,38 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect } from "react";
 
 import Drawer from "../Drawer";
 import EmptySearchHistory from "./widgets/EmptySearchHistory";
-import DrawerTitle from "./widgets/DrawerTitle";
+import Title from "./widgets/Title";
 import SearchHistoryContent from "./widgets/SearchHistoryContent";
 
 //services
 import { SearchHistoryService } from "../../services/searchHistory.service";
-import { API_STATES } from "../../hooks/useApi.hook";
+import {
+  SEARCH_HISTORY_ACTIONS,
+  SearchHistoryContext,
+  SearchHistoryContextProvider,
+} from "./context";
 
 const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
-  const [searchHistory, setSearchHistory] = useState([]);
-  const [searchValue, setSearchValue] = useState("");
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedHistory, setSelectedHistory] = useState([]);
+  const { state: searchHistoryState, dispatch } =
+    useContext(SearchHistoryContext);
+
+  const { searchHistory, searchValue, selectedState, selectedHistory } =
+    searchHistoryState;
 
   const searchWord = (word) => {
     setIsModalOpen(false);
     onWordClick(word);
   };
 
-  const removeSearch = (id) => {
+  const removeSearchEntry = (id) => {
     if (!id) return;
     SearchHistoryService.deleteSearchHistoryById(id);
-    clearStates();
-    setSearchHistory(SearchHistoryService.getSearchHistories());
+    dispatch({ type: SEARCH_HISTORY_ACTIONS.CLEAR_STATES });
+    dispatch({
+      type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
+      payload: SearchHistoryService.getSearchHistories(),
+    });
   };
 
   const removeSelectedHistory = () => {
@@ -35,7 +43,10 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
     if (!confim) return;
     SearchHistoryService.removeSelectedHistory(selectedHistory);
     setSelectedHistory([]);
-    setSearchHistory(SearchHistoryService.getSearchHistories());
+    dispatch({
+      type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
+      payload: SearchHistoryService.getSearchHistories(),
+    });
   };
   const clearSearchHistory = () => {
     const confirm = window.confirm(
@@ -43,19 +54,21 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
     );
     if (!confirm) return;
     SearchHistoryService.clearSearchHistory();
-    setSearchHistory([]);
+    dispatch({
+      type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
+      payload: [],
+    });
   };
-  const clearStates = () => {
-    setSearchValue("");
-    setSelectedHistory([]);
-    setSelectedState("");
-  };
+
   useEffect(() => {
     if (isModalOpen) {
-      setSearchHistory(SearchHistoryService.getSearchHistories());
+      dispatch({
+        type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
+        payload: SearchHistoryService.getSearchHistories(),
+      });
       return;
     }
-    clearStates();
+    dispatch({ type: SEARCH_HISTORY_ACTIONS.CLEAR_STATES });
   }, [isModalOpen]);
 
   let filteredSearchHistory = searchHistory;
@@ -72,26 +85,31 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
 
   return (
     <Drawer isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-      <DrawerTitle setIsModalOpen={setIsModalOpen} />
-      {searchHistory?.length ? (
-        <SearchHistoryContent
-          searchHistory={filteredSearchHistory}
-          setSearchValue={setSearchValue}
-          searchValue={searchValue}
-          clearSearchHistory={clearSearchHistory}
-          searchWord={searchWord}
-          removeSearch={removeSearch}
-          selectedState={selectedState}
-          setSelectedState={setSelectedState}
-          selectedHistory={selectedHistory}
-          setSelectedHistory={setSelectedHistory}
-          removeSelectedHistory={removeSelectedHistory}
-        />
-      ) : (
-        <EmptySearchHistory />
-      )}
+      <div className="h-screen flex flex-col">
+        <Title setIsModalOpen={setIsModalOpen} />
+        <div className="flex flex-col flex-grow">
+          {searchHistory?.length ? (
+            <SearchHistoryContent
+              searchHistory={filteredSearchHistory}
+              clearSearchHistory={clearSearchHistory}
+              searchWord={searchWord}
+              removeSearch={removeSearchEntry}
+              removeSelectedHistory={removeSelectedHistory}
+            />
+          ) : (
+            <EmptySearchHistory />
+          )}
+        </div>
+      </div>
     </Drawer>
   );
 };
 
-export default SearchHistory;
+const SearchHistoryWithContext = (props) => {
+  return (
+    <SearchHistoryContextProvider>
+      <SearchHistory {...props} />
+    </SearchHistoryContextProvider>
+  );
+};
+export default SearchHistoryWithContext;
