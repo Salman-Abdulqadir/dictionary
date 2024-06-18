@@ -58,7 +58,13 @@ const Dictionary = () => {
   };
   return (
     <section className="flex flex-col flex-grow gap-4 h-screen w-full sm:w-full lg:w-3/4 p-4 overflow-y-scroll">
-      <DictionaryHeader />
+      <DictionaryHeader
+        goToHome={() => {
+          setWordMeaning(null);
+          setSearchValue("");
+          resetApiState();
+        }}
+      />
       <div className="sticky top-0 bg-base-100">
         <DictionarySearch
           onSearch={onSearch}

@@ -3,7 +3,6 @@ import { SEARCH_HISTORY_ACTIONS, SearchHistoryContext } from "../../context";
 
 import EmptySearchHistory from "../EmptySearchHistory";
 import SearchHistoryTabFilters from "./widgets/SearchHistoryTabFilters";
-import SearchHistoryHeader from "./widgets/SearchHistoryHeader";
 import SearchHistoryFooter from "./widgets/SearchHistoryFooter";
 import SearchHistoryList from "./widgets/SearchHistoryList";
 
@@ -43,8 +42,7 @@ const SearchHistoryContent = ({
     );
   };
   return (
-    <div className="flex flex-col flex-grow">
-      <SearchHistoryHeader />
+    <div className="flex flex-col flex-grow gap-4">
       <SearchHistoryTabFilters />
       {getContent()}
       <SearchHistoryFooter

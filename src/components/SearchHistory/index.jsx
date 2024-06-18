@@ -2,7 +2,7 @@ import React, { useContext, useEffect } from "react";
 
 import Drawer from "../Drawer";
 import EmptySearchHistory from "./widgets/EmptySearchHistory";
-import Title from "./widgets/Title";
+import SearchHistoryHeader from "./widgets/SearchHistoryHeader";
 import SearchHistoryContent from "./widgets/SearchHistoryContent";
 
 //services
@@ -42,7 +42,10 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
     );
     if (!confim) return;
     SearchHistoryService.removeSelectedHistory(selectedHistory);
-    setSelectedHistory([]);
+    dispatch({
+      type: SEARCH_HISTORY_ACTIONS.SET_SELECTED_HISTORY,
+      payload: [],
+    });
     dispatch({
       type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
       payload: SearchHistoryService.getSearchHistories(),
@@ -85,8 +88,8 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
 
   return (
     <Drawer isOpen={isModalOpen} setIsOpen={setIsModalOpen}>
-      <div className="h-screen flex flex-col">
-        <Title setIsModalOpen={setIsModalOpen} />
+      <div className="h-screen flex flex-col gap-2">
+        <SearchHistoryHeader setIsModalOpen={setIsModalOpen} />
         <div className="flex flex-col flex-grow">
           {searchHistory?.length ? (
             <SearchHistoryContent

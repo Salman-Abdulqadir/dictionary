@@ -17,7 +17,7 @@ const SearchHistoryList = ({
     state: { selectedHistory },
   } = useContext(SearchHistoryContext);
   return (
-    <div className="flex-1 flex flex-col gap-4 h-full overflow-y-scroll">
+    <div className="flex flex-col flex-grow overflow-scroll h-16 gap-4">
       {searchHistory?.map((search, index) => (
         <div
           key={`${index}-${search?.id}`}
