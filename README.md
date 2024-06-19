@@ -6,7 +6,7 @@
 
 ## Demo
 
-[Click here to preview app](https://age-calculator-4.netlify.app/)
+[Click here to preview app](https://fast-dictionary.netlify.app/)
 
 ## Run Locally
 
