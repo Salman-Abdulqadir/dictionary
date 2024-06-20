@@ -1,12 +1,7 @@
 import React from "react";
 import { IoSearch } from "react-icons/io5";
 import { FaHistory } from "react-icons/fa";
-const DictionarySearch = ({
-  onSearch,
-  searchValue,
-  setSearchValue,
-  openSearchHistory,
-}) => {
+const DictionarySearch = ({ onSearch, searchValue, setSearchValue }) => {
   const onFormSubmit = (e) => {
     e.preventDefault();
     onSearch();
@@ -29,15 +24,6 @@ const DictionarySearch = ({
           <IoSearch size={25} className="text-primary" />
         </button>
       </label>
-      <button
-        className="btn btn-ghost btn-circle"
-        onClick={(e) => {
-          e.preventDefault();
-          openSearchHistory();
-        }}
-      >
-        <FaHistory size={20} />
-      </button>
     </form>
   );
 };

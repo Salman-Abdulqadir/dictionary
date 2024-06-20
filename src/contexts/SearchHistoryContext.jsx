@@ -1,6 +1,8 @@
-import { createContext, useReducer, useState } from "react";
+import { createContext, useReducer, useContext } from "react";
 
 export const SearchHistoryContext = createContext();
+
+export const useSearchHistory = () => useContext(SearchHistoryContext);
 
 export const SEARCH_HISTORY_ACTIONS = {
   SET_SEARCH_HISTORY: "SET_SEARCH_HISTORY",

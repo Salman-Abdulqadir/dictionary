@@ -1,5 +1,8 @@
 import { useContext } from "react";
-import { SEARCH_HISTORY_ACTIONS, SearchHistoryContext } from "../../context";
+import {
+  SEARCH_HISTORY_ACTIONS,
+  SearchHistoryContext,
+} from "../../../../contexts/SearchHistoryContext";
 
 import EmptySearchHistory from "../EmptySearchHistory";
 import SearchHistoryTabFilters from "./widgets/SearchHistoryTabFilters";

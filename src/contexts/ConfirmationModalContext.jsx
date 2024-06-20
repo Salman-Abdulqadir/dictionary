@@ -3,7 +3,7 @@
  * then use the "useConfirmationModal Hook"
  */
 import { createContext, useContext, useState } from "react";
-import Modal from "./Modal";
+import Modal from "../components/Modal";
 
 const ConfirmationModalContext = createContext();
 import { IoWarning } from "react-icons/io5";
