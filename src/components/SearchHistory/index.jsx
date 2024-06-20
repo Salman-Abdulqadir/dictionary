@@ -12,6 +12,10 @@ import {
   SearchHistoryContext,
   SearchHistoryContextProvider,
 } from "./context";
+import {
+  ConfirmationModalContextProvider,
+  useConfirmationModal,
+} from "../ConfirmationModal";
 
 const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
   const { state: searchHistoryState, dispatch } =
@@ -19,6 +23,8 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
 
   const { searchHistory, searchValue, selectedState, selectedHistory } =
     searchHistoryState;
+
+  const confirmationModal = useConfirmationModal();
 
   const searchWord = (word) => {
     setIsModalOpen(false);
@@ -37,29 +43,32 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
 
   const removeSelectedHistory = () => {
     if (!selectedHistory?.length) return;
-    const confim = window.confirm(
-      `Are you sure you want to delete, ${selectedHistory?.length} search histories?`
-    );
-    if (!confim) return;
-    SearchHistoryService.removeSelectedHistory(selectedHistory);
-    dispatch({
-      type: SEARCH_HISTORY_ACTIONS.SET_SELECTED_HISTORY,
-      payload: [],
-    });
-    dispatch({
-      type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
-      payload: SearchHistoryService.getSearchHistories(),
+
+    confirmationModal({
+      content: `${selectedHistory?.length} selected history will be deleted`,
+      onOk: () => {
+        SearchHistoryService.removeSelectedHistory(selectedHistory);
+        dispatch({
+          type: SEARCH_HISTORY_ACTIONS.SET_SELECTED_HISTORY,
+          payload: [],
+        });
+        dispatch({
+          type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
+          payload: SearchHistoryService.getSearchHistories(),
+        });
+      },
     });
   };
   const clearSearchHistory = () => {
-    const confirm = window.confirm(
-      "Are you sure you want to clear the search history? This action is irreversible"
-    );
-    if (!confirm) return;
-    SearchHistoryService.clearSearchHistory();
-    dispatch({
-      type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
-      payload: [],
+    confirmationModal({
+      content: "This action will clear the search history (irreversible)",
+      onOk: () => {
+        SearchHistoryService.clearSearchHistory();
+        dispatch({
+          type: SEARCH_HISTORY_ACTIONS.SET_SEARCH_HISTORY,
+          payload: [],
+        });
+      },
     });
   };
 
@@ -111,7 +120,9 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
 const SearchHistoryWithContext = (props) => {
   return (
     <SearchHistoryContextProvider>
-      <SearchHistory {...props} />
+      <ConfirmationModalContextProvider>
+        <SearchHistory {...props} />
+      </ConfirmationModalContextProvider>
     </SearchHistoryContextProvider>
   );
 };
