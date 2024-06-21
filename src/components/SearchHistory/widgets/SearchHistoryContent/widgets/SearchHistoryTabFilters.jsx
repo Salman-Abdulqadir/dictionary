@@ -2,7 +2,10 @@ import React, { useContext } from "react";
 
 import { MdCheck, MdClose } from "react-icons/md";
 import { API_STATES } from "../../../../../hooks/useApi.hook";
-import { SEARCH_HISTORY_ACTIONS, SearchHistoryContext } from "../../../context";
+import {
+  SEARCH_HISTORY_ACTIONS,
+  SearchHistoryContext,
+} from "../../../../../contexts/SearchHistoryContext";
 
 const tabListItems = [
   {

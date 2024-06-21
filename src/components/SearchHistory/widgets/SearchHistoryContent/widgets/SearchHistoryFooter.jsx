@@ -1,6 +1,9 @@
 import { useContext } from "react";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { SEARCH_HISTORY_ACTIONS, SearchHistoryContext } from "../../../context";
+import {
+  SEARCH_HISTORY_ACTIONS,
+  SearchHistoryContext,
+} from "../../../../../contexts/SearchHistoryContext";
 
 const SearchHistoryFooter = ({
   clearSearchHistory,

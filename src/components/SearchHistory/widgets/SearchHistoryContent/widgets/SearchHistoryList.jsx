@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { SearchHistoryContext } from "../../../context";
+import { SearchHistoryContext } from "../../../../../contexts/SearchHistoryContext";
 
 import { API_STATES } from "../../../../../hooks/useApi.hook";
 // icons

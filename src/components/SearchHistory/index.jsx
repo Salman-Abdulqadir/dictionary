@@ -9,22 +9,20 @@ import SearchHistoryContent from "./widgets/SearchHistoryContent";
 import { SearchHistoryService } from "../../services/searchHistory.service";
 import {
   SEARCH_HISTORY_ACTIONS,
-  SearchHistoryContext,
-  SearchHistoryContextProvider,
-} from "./context";
-import {
-  ConfirmationModalContextProvider,
-  useConfirmationModal,
-} from "../ConfirmationModal";
+  useSearchHistory,
+} from "../../contexts/SearchHistoryContext";
+import { useConfirmationModal } from "../../contexts/ConfirmationModalContext";
+import { useDictionary } from "../../contexts/DictionaryContext";
 
-const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
-  const { state: searchHistoryState, dispatch } =
-    useContext(SearchHistoryContext);
+const SearchHistory = ({ onWordClick }) => {
+  const { state: searchHistoryState, dispatch } = useSearchHistory();
 
   const { searchHistory, searchValue, selectedState, selectedHistory } =
     searchHistoryState;
 
   const confirmationModal = useConfirmationModal();
+
+  const { isModalOpen, setIsModalOpen } = useDictionary();
 
   const searchWord = (word) => {
     setIsModalOpen(false);
@@ -117,13 +115,4 @@ const SearchHistory = ({ isModalOpen, setIsModalOpen, onWordClick }) => {
   );
 };
 
-const SearchHistoryWithContext = (props) => {
-  return (
-    <SearchHistoryContextProvider>
-      <ConfirmationModalContextProvider>
-        <SearchHistory {...props} />
-      </ConfirmationModalContextProvider>
-    </SearchHistoryContextProvider>
-  );
-};
-export default SearchHistoryWithContext;
+export default SearchHistory;

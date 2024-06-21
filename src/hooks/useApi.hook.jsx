@@ -19,7 +19,7 @@ const useApi = (method) => {
       const response = await method(args);
       setData({ data: response, state: API_STATES.SUCCESS });
     } catch (e) {
-      setData({ data: null, state: API_STATES.ERROR });
+      setData({ data: args, state: API_STATES.ERROR });
     }
   };
   const resetState = () => setData(initialState);

@@ -1,5 +1,8 @@
 import { useContext } from "react";
-import { SEARCH_HISTORY_ACTIONS, SearchHistoryContext } from "../context";
+import {
+  SEARCH_HISTORY_ACTIONS,
+  SearchHistoryContext,
+} from "../../../contexts/SearchHistoryContext";
 import { IoSearch, IoClose } from "react-icons/io5";
 
 const SearchInput = () => {

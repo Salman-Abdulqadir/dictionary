@@ -11,16 +11,27 @@ import Spinner from "../Spinner";
 import WordNotFound from "./widgets/WordNotFound";
 import Introduction from "./widgets/Introduction";
 import SearchHistory from "../SearchHistory";
+import { useDictionary } from "../../contexts/DictionaryContext";
 
 const Dictionary = () => {
   const [dictionaryApiResponse, callDictionaryApi, resetApiState] = useApi(
     DictionaryService.getWordMeaning
   );
-  const [searchValue, setSearchValue] = useState("");
-  const [wordMeaning, setWordMeaning] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const {
+    searchValue,
+    setSearchValue,
+    wordMeaning,
+    setWordMeaning,
+    setIsModalOpen,
+  } = useDictionary();
   const onSearch = async () => {
+    if (
+      dictionaryApiResponse?.data &&
+      (searchValue?.toUpperCase() ===
+        dictionaryApiResponse?.data[0]?.toUpperCase() ||
+        searchValue?.toUpperCase() === wordMeaning?.word?.toUpperCase())
+    )
+      return;
     if (!searchValue) {
       setWordMeaning(null);
       resetApiState();
@@ -75,11 +86,7 @@ const Dictionary = () => {
       </div>
       {getContent()}
 
-      <SearchHistory
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        onWordClick={onWordClick}
-      />
+      <SearchHistory onWordClick={onWordClick} />
     </section>
   );
 };
