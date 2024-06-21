@@ -9,6 +9,8 @@ export const SEARCH_HISTORY_ACTIONS = {
   SET_SEARCH_VALUE: "SET_SEARCH_VALUE",
   SET_SELECTED_STATE: "SET_SELECTED_STATE",
   SET_SELECTED_HISTORY: "SET_SELECTED_HISTORY",
+  TOGGLE_CLEARING_ENABLED: "TOGGLE_CLEARING_ENABLED",
+  SET_CLEARING_INTERVAL: "SET_CLEARING_INTERVAL",
   CLEAR_STATES: "CLEAR_STATES",
 };
 
@@ -18,6 +20,8 @@ export const SearchHistoryContextProvider = ({ children }) => {
     searchValue: "",
     selectedState: "",
     selectedHistory: [],
+    clearingInterval: null,
+    clearingEnabled: true,
   };
 
   const reducer = (state, action) => {
@@ -32,6 +36,10 @@ export const SearchHistoryContextProvider = ({ children }) => {
         return { ...state, selectedState: action.payload };
       case SEARCH_HISTORY_ACTIONS.SET_SELECTED_HISTORY:
         return { ...state, selectedHistory: action.payload };
+      case SEARCH_HISTORY_ACTIONS.TOGGLE_CLEARING_ENABLED:
+        return { ...state, clearingEnabled: !state.clearingEnabled };
+      case SEARCH_HISTORY_ACTIONS.SET_CLEARING_INTERVAL:
+        return { ...state, clearingInterval: action.payload };
       default:
         return state;
     }

@@ -15,20 +15,22 @@ const DictionaryHeader = ({ goToHome }) => {
     <header className="flex items-center justify-between w-full ">
       <LiaBookSolid size={50} onClick={goToHome} className="cursor-pointer" />
       <div className="flex items-center gap-4">
-        <Tooltip title={"Settings"}>
-          <button
-            className="btn btn-ghost btn-sm btn-circle"
-            onClick={openSettings}
-          >
-            <IoSettingsOutline size={25} />
-          </button>
-        </Tooltip>
+        <ThemeChanger />
         <Tooltip title={"History"}>
           <button
             className="btn btn-ghost btn-circle btn-sm"
             onClick={openSearchHistory}
           >
             <FaHistory size={20} />
+          </button>
+        </Tooltip>
+
+        <Tooltip title={"Settings"}>
+          <button
+            className="btn btn-ghost btn-sm btn-circle"
+            onClick={openSettings}
+          >
+            <IoSettingsOutline size={25} />
           </button>
         </Tooltip>
       </div>

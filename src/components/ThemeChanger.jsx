@@ -15,8 +15,8 @@ const ThemeChanger = () => {
     html.setAttribute("data-theme", theme);
   }, []);
   return (
-    <Tooltip title={"Change theme"} position="top">
-      <label className="swap swap-rotate btn btn-primary btn-circle font-extrabold">
+    <Tooltip title={"Change theme"}>
+      <label className="swap swap-rotate btn btn-primary btn-sm font-extrabold">
         <input
           type="checkbox"
           value={theme}
